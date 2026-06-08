@@ -2,9 +2,9 @@
 
 namespace Hwkdo\IntranetAppBueExports\Tests;
 
+use Hwkdo\IntranetAppBueExports\IntranetAppBueExportsServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Hwkdo\IntranetAppBueExports\IntranetAppBueExportsServiceProvider;
 
 class TestCase extends Orchestra
 {

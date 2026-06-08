@@ -1,21 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Hwkdo\IntranetAppBueExports;
 
+use Hwkdo\IntranetAppBueExports\Services\ExportQueryBuilder;
+use Hwkdo\IntranetAppBueExports\Services\ExportTypeAccessService;
+use Hwkdo\IntranetAppBueExports\Services\StammdatenOptionsService;
+use Livewire\Volt\Volt;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Hwkdo\IntranetAppBueExports\Commands\IntranetAppBueExportsCommand;
-use Livewire\Volt\Volt;
 
 class IntranetAppBueExportsServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
-        /*
-         * This class is a Package Service Provider
-         *
-         * More info: https://github.com/spatie/laravel-package-tools
-         */
         $package
             ->name('intranet-app-bue-exports')
             ->hasConfigFile()
@@ -23,14 +22,36 @@ class IntranetAppBueExportsServiceProvider extends PackageServiceProvider
             ->discoversMigrations();
     }
 
+    public function register(): void
+    {
+        parent::register();
+
+        $this->app->singleton(ExportTypeAccessService::class);
+        $this->app->singleton(ExportQueryBuilder::class);
+        $this->app->singleton(StammdatenOptionsService::class);
+    }
+
     public function boot(): void
     {
         parent::boot();
-        // Gate::policy(Raum::class, RaumPolicy::class);
-        $this->app->booted( function() {
-            Volt::mount(__DIR__.'/../resources/views/livewire');                        
-        });
-        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
 
+        $this->mergeConfigFrom(
+            __DIR__.'/../config/bue-exports-connection.php',
+            'intranet-app-bue-exports.bue_connection'
+        );
+
+        $this->app->booted(function (): void {
+            $cfg = config('intranet-app-bue-exports.bue_connection');
+
+            if (is_array($cfg) && isset($cfg['name'])) {
+                config()->set("database.connections.{$cfg['name']}", $cfg);
+            }
+        });
+
+        $this->app->booted(function (): void {
+            Volt::mount(__DIR__.'/../resources/views/livewire');
+        });
+
+        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
     }
 }

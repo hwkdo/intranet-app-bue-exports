@@ -1,10 +1,13 @@
 <?php
 
 namespace Hwkdo\IntranetAppBueExports;
+
 use Hwkdo\IntranetAppBase\Interfaces\IntranetAppInterface;
+use Hwkdo\IntranetAppBueExports\Data\AppSettings;
+use Hwkdo\IntranetAppBueExports\Data\UserSettings;
 use Illuminate\Support\Collection;
 
-class IntranetAppBueExports implements IntranetAppInterface 
+class IntranetAppBueExports implements IntranetAppInterface
 {
     public static function app_name(): string
     {
@@ -30,15 +33,15 @@ class IntranetAppBueExports implements IntranetAppInterface
     {
         return collect(config('intranet-app-bue-exports.roles.user'));
     }
-    
+
     public static function userSettingsClass(): ?string
     {
-        return \Hwkdo\IntranetAppBueExports\Data\UserSettings::class;
+        return UserSettings::class;
     }
-    
+
     public static function appSettingsClass(): ?string
     {
-        return \Hwkdo\IntranetAppBueExports\Data\AppSettings::class;
+        return AppSettings::class;
     }
 
     public static function mcpServers(): array

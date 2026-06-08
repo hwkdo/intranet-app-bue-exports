@@ -13,16 +13,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('intranet_app_bue-exports_settings', function (Blueprint $table) {
+        Schema::create('intranet_app_bue_exports_settings', function (Blueprint $table) {
             $table->id();
             $table->integer('version');
             $table->json('settings')->nullable();
             $table->timestamps();
         });
 
-        DB::table('intranet_app_bue-exports_settings')->insert([
+        DB::table('intranet_app_bue_exports_settings')->insert([
             'version' => 1,
-            'settings' => json_encode(new AppSettings()),
+            'settings' => json_encode(new AppSettings),
         ]);
     }
 
@@ -31,7 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('intranet_app_bue-exports_settings');
+        Schema::dropIfExists('intranet_app_bue_exports_settings');
     }
 };
-

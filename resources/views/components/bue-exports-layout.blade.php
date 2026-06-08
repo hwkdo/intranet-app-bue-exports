@@ -7,7 +7,7 @@
 @php
     $defaultNavItems = [
         ['label' => 'Übersicht', 'href' => route('apps.bue-exports.index'), 'icon' => 'home', 'description' => 'Zurück zur Übersicht', 'buttonText' => 'Übersicht anzeigen'],
-        ['label' => 'Beispielseite', 'href' => route('apps.bue-exports.example'), 'icon' => 'document-text', 'description' => 'Beispielseite anzeigen', 'buttonText' => 'Beispielseite öffnen'],
+        ['label' => 'Exporte', 'href' => route('apps.bue-exports.export'), 'icon' => 'arrow-down-tray', 'description' => 'BUE-Daten exportieren', 'buttonText' => 'Exporte öffnen'],
         ['label' => 'Meine Einstellungen', 'href' => route('apps.bue-exports.settings.user'), 'icon' => 'cog-6-tooth', 'description' => 'Persönliche Einstellungen anpassen', 'buttonText' => 'Einstellungen öffnen'],
         ['label' => 'App-Info', 'href' => route('apps.bue-exports.info'), 'icon' => 'information-circle', 'description' => 'Installierte Version und Release-Historie', 'buttonText' => 'App-Info anzeigen'],
         ['label' => 'Admin', 'href' => route('apps.bue-exports.admin.index'), 'icon' => 'shield-check', 'description' => 'Administrationsbereich verwalten', 'buttonText' => 'Admin öffnen', 'permission' => 'manage-app-bue-exports']
@@ -35,11 +35,11 @@
     >
         <x-intranet-app-base::app-index-auto 
             app-identifier="bue-exports"
-            app-name="BueExports App"
-            app-description="Generated app: Bue Exports"
+            app-name="Bue Exports"
+            app-description="BUE/Oracle-Datenexporte mit konfigurierbaren Filtern"
             :nav-items="$navItems"
-            welcome-title="Willkommen zur BueExports App"
-            welcome-description="Dies ist eine Beispiel-App, die als BueExports für neue Intranet-Apps dient."
+            welcome-title="Willkommen zu Bue Exports"
+            welcome-description="Exportieren Sie BUE-Daten aus Oracle als Excel-Datei."
         />
     </x-intranet-app-base::app-layout>
 @else

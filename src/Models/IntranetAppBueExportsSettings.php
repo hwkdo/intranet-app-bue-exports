@@ -16,7 +16,7 @@ class IntranetAppBueExportsSettings extends Model
         ];
     }
 
-    public static function current(): IntranetAppBueExportsSettings|null
+    public static function current(): ?IntranetAppBueExportsSettings
     {
         return self::orderBy('version', 'desc')->first();
     }
