@@ -19,6 +19,7 @@ class ExportFilterInput extends Data
         public array $gewerke = [],
         public array $orte = [],
         public array $landkreise = [],
+        public ?string $anlage = null,
         public array $custom = [],
         public ?int $maxRecords = null,
     ) {}

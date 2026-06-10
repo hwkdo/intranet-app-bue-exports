@@ -28,6 +28,14 @@ return [
         'landkreise' => 'hwkuserro.STAMM_LANDKREISE',
     ],
 
+    'labeled_stamm_views' => [
+        'anlagen' => [
+            'view' => 'hwkuserro.STAMM_ANLAGEN',
+            'value_column' => 'ANLAGE',
+            'label_column' => 'ANLAGEBEZEICHNUNG',
+        ],
+    ],
+
     // Oracle/yajra-oci8 liefert Attribute in Kleinbuchstaben (name, nicht NAME)
     'stamm_value_column' => 'name',
 

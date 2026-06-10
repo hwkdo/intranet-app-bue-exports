@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('gewerke_field')->nullable();
             $table->string('orte_field')->nullable();
             $table->string('landkreise_field')->nullable();
+            $table->string('anlage_field')->nullable();
             $table->json('custom_filters')->nullable();
             $table->json('excluded_columns')->nullable();
             $table->json('column_labels')->nullable();
@@ -54,6 +55,7 @@ return new class extends Migration
             'gewerke_field' => 'GEWERBE',
             'orte_field' => 'ORT',
             'landkreise_field' => 'LANDKREIS',
+            'anlage_field' => 'ANLAGE',
             'custom_filters' => [
                 [
                     'key' => 'min_betrag',
@@ -76,6 +78,7 @@ return new class extends Migration
                 'gewerbe' => 'Gewerk',
                 'ort' => 'Ort',
                 'landkreis' => 'Landkreis',
+                'anlage' => 'Anlage',
             ],
             'is_active' => true,
             'sort_order' => 1,

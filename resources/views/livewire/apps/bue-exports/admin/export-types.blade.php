@@ -23,6 +23,7 @@ state([
     'gewerke_field' => null,
     'orte_field' => null,
     'landkreise_field' => null,
+    'anlage_field' => null,
     'is_active' => true,
     'sort_order' => 0,
     'max_records' => 10_000,
@@ -43,6 +44,7 @@ rules([
     'gewerke_field' => 'nullable|string|regex:/^[A-Z0-9_]+$/',
     'orte_field' => 'nullable|string|regex:/^[A-Z0-9_]+$/',
     'landkreise_field' => 'nullable|string|regex:/^[A-Z0-9_]+$/',
+    'anlage_field' => 'nullable|string|regex:/^[A-Z0-9_]+$/',
     'max_records' => 'required|integer|min:1|max:1000000',
 ]);
 
@@ -86,6 +88,7 @@ $resetForm = function (): void {
     $this->gewerke_field = null;
     $this->orte_field = null;
     $this->landkreise_field = null;
+    $this->anlage_field = null;
     $this->is_active = true;
     $this->sort_order = 0;
     $this->max_records = (int) config('intranet-app-bue-exports.default_max_records', 10_000);
@@ -114,6 +117,7 @@ $edit = function (int $id): void {
     $this->gewerke_field = $type->gewerke_field;
     $this->orte_field = $type->orte_field;
     $this->landkreise_field = $type->landkreise_field;
+    $this->anlage_field = $type->anlage_field;
     $this->is_active = $type->is_active;
     $this->sort_order = $type->sort_order;
     $this->max_records = $type->max_records;
@@ -162,6 +166,7 @@ $save = function (): void {
         'gewerke_field' => $this->gewerke_field ?: null,
         'orte_field' => $this->orte_field ?: null,
         'landkreise_field' => $this->landkreise_field ?: null,
+        'anlage_field' => $this->anlage_field ?: null,
         'custom_filters' => $customFilters,
         'excluded_columns' => $excludedColumns,
         'is_active' => $this->is_active,
@@ -242,6 +247,7 @@ $memberCount = function (?string $roleName): int {
                     <flux:input wire:model="gewerke_field" label="Gewerke-Feld" />
                     <flux:input wire:model="orte_field" label="Orte-Feld" />
                     <flux:input wire:model="landkreise_field" label="Landkreise-Feld" />
+                    <flux:input wire:model="anlage_field" label="Anlage-Feld" />
                     <flux:input wire:model="sort_order" type="number" label="Sortierung" />
                     <flux:input wire:model="max_records" type="number" min="1" label="Maximale Anzahl Datensätze" description="Begrenzt die Zeilenanzahl pro Excel-Export." required />
                     <flux:switch wire:model="is_active" label="Aktiv" />

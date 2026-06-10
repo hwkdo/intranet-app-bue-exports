@@ -29,6 +29,7 @@ class ExportTypeFactory extends Factory
             'gewerke_field' => 'GEWERBE',
             'orte_field' => 'ORT',
             'landkreise_field' => 'LANDKREIS',
+            'anlage_field' => null,
             'custom_filters' => [],
             'is_active' => true,
             'sort_order' => 0,

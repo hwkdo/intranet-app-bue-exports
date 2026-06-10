@@ -23,13 +23,14 @@ beforeEach(function () {
         $table->string('GEWERBE')->nullable();
         $table->string('ORT')->nullable();
         $table->string('LANDKREIS')->nullable();
+        $table->string('ANLAGE')->nullable();
         $table->decimal('BEITRAG', 10, 2)->nullable();
     });
 
     DB::connection('bue_exports_test')->table('betrieb_beitragsstaerke')->insert([
-        ['EMAIL' => 'a@test.de', 'GEWERBE' => 'Tischler', 'ORT' => 'Dortmund', 'LANDKREIS' => 'DO', 'BEITRAG' => 500],
-        ['EMAIL' => null, 'GEWERBE' => 'Maler', 'ORT' => 'Dortmund', 'LANDKREIS' => 'DO', 'BEITRAG' => 100],
-        ['EMAIL' => 'b@test.de', 'GEWERBE' => 'Tischler', 'ORT' => 'Essen', 'LANDKREIS' => 'E', 'BEITRAG' => 800],
+        ['EMAIL' => 'a@test.de', 'GEWERBE' => 'Tischler', 'ORT' => 'Dortmund', 'LANDKREIS' => 'DO', 'ANLAGE' => 'A1', 'BEITRAG' => 500],
+        ['EMAIL' => null, 'GEWERBE' => 'Maler', 'ORT' => 'Dortmund', 'LANDKREIS' => 'DO', 'ANLAGE' => 'A2', 'BEITRAG' => 100],
+        ['EMAIL' => 'b@test.de', 'GEWERBE' => 'Tischler', 'ORT' => 'Essen', 'LANDKREIS' => 'E', 'ANLAGE' => 'A1', 'BEITRAG' => 800],
     ]);
 });
 
@@ -42,6 +43,7 @@ function makeBeitragsstaerkeExportType(): ExportType
         'gewerke_field' => 'GEWERBE',
         'orte_field' => 'ORT',
         'landkreise_field' => 'LANDKREIS',
+        'anlage_field' => 'ANLAGE',
         'custom_filters' => [
             ['key' => 'min_betrag', 'label' => 'Min', 'field' => 'BEITRAG', 'operator' => '>', 'type' => 'number'],
             ['key' => 'max_betrag', 'label' => 'Max', 'field' => 'BEITRAG', 'operator' => '<', 'type' => 'number'],
@@ -61,6 +63,19 @@ test('export query builder or-combines ort and landkreis filters', function () {
 
     expect($results)->toHaveCount(3)
         ->and($results->pluck('ORT')->all())->toContain('Dortmund', 'Essen');
+});
+
+test('export query builder applies anlage filter', function () {
+    $type = makeBeitragsstaerkeExportType();
+
+    $query = app(ExportQueryBuilder::class)->build($type, new ExportFilterInput(
+        anlage: 'A2',
+    ));
+
+    $results = $query->get();
+
+    expect($results)->toHaveCount(1)
+        ->and($results->first()->ANLAGE)->toBe('A2');
 });
 
 test('export query builder applies email gewerke and ort filters', function () {

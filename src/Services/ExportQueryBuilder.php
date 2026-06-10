@@ -36,6 +36,10 @@ class ExportQueryBuilder
 
         $this->applyLocationFilters($query, $type, $filters);
 
+        if (filled($type->anlage_field) && filled($filters->anlage)) {
+            $query->where($type->anlage_field, $filters->anlage);
+        }
+
         foreach ($type->customFilterDefinitions() as $definition) {
             $this->applyCustomFilter($query, $definition, $filters->custom[$definition->key] ?? null);
         }

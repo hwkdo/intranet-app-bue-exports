@@ -19,6 +19,7 @@ state([
     'gewerke' => [],
     'orte' => [],
     'landkreise' => [],
+    'anlage' => null,
     'custom' => [],
 ]);
 
@@ -45,12 +46,15 @@ $orteOptions = computed(fn () => app(StammdatenOptionsService::class)->valuesFor
 
 $landkreiseOptions = computed(fn () => app(StammdatenOptionsService::class)->valuesFor('landkreise'));
 
+$anlagenOptions = computed(fn () => app(StammdatenOptionsService::class)->anlagen());
+
 updated([
     'exportTypeId' => function (): void {
         $this->nurMitEmail = false;
         $this->gewerke = [];
         $this->orte = [];
         $this->landkreise = [];
+        $this->anlage = null;
         $this->custom = [];
         $this->maxRecords = $this->selectedType?->max_records;
     },
@@ -81,6 +85,7 @@ $exportExcel = function () {
         gewerke: $this->gewerke,
         orte: $this->orte,
         landkreise: $this->landkreise,
+        anlage: $this->anlage ?: null,
         custom: $this->custom,
         maxRecords: (int) $this->maxRecords,
     );
@@ -145,6 +150,14 @@ $exportExcel = function () {
                         <flux:select wire:model="landkreise" variant="listbox" multiple searchable label="Landkreise" indicator="checkbox">
                             @foreach ($this->landkreiseOptions as $value)
                                 <flux:select.option value="{{ $value }}">{{ $value }}</flux:select.option>
+                            @endforeach
+                        </flux:select>
+                    @endif
+
+                    @if ($this->selectedType->anlage_field)
+                        <flux:select wire:model="anlage" variant="listbox" searchable label="Anlage" placeholder="Alle Anlagen">
+                            @foreach ($this->anlagenOptions as $option)
+                                <flux:select.option value="{{ $option['value'] }}">{{ $option['label'] }}</flux:select.option>
                             @endforeach
                         </flux:select>
                     @endif

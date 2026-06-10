@@ -39,6 +39,14 @@ class StammdatenOptionsService
     }
 
     /**
+     * @return Collection<int, array{value: string, label: string}>
+     */
+    public function anlagen(): Collection
+    {
+        return $this->loadLabeledOptions('anlagen');
+    }
+
+    /**
      * @return Collection<int, object>
      */
     private function loadOptions(string $key): Collection
@@ -58,6 +66,50 @@ class StammdatenOptionsService
                 ->distinct()
                 ->orderBy($column)
                 ->get(),
+        );
+    }
+
+    /**
+     * @return Collection<int, array{value: string, label: string}>
+     */
+    private function loadLabeledOptions(string $key): Collection
+    {
+        /** @var array{view: string, value_column: string, label_column: string}|null $config */
+        $config = config("intranet-app-bue-exports.labeled_stamm_views.{$key}");
+
+        if ($config === null) {
+            return collect();
+        }
+
+        $connectionName = config('intranet-app-bue-exports.bue_connection.name');
+        $ttl = (int) config('intranet-app-bue-exports.stamm_cache_ttl', 3600);
+
+        return Cache::remember(
+            "intranet-app-bue-exports.stamm.labeled.v1.{$key}",
+            $ttl,
+            function () use ($config, $connectionName): Collection {
+                $items = $this->bueLaravel
+                    ->using($connectionName)
+                    ->table($config['view'])
+                    ->select($config['value_column'], $config['label_column'])
+                    ->orderBy($config['label_column'])
+                    ->get();
+
+                if ($items->isEmpty()) {
+                    return collect();
+                }
+
+                $valueKey = $this->resolveResultColumnKey($config['value_column'], $items);
+                $labelKey = $this->resolveResultColumnKey($config['label_column'], $items);
+
+                return $items
+                    ->map(fn (object $row): array => [
+                        'value' => (string) data_get($row, $valueKey),
+                        'label' => (string) data_get($row, $labelKey),
+                    ])
+                    ->filter(fn (array $option): bool => $option['value'] !== '' && $option['label'] !== '')
+                    ->values();
+            },
         );
     }
 
