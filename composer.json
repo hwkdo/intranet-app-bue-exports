@@ -45,7 +45,8 @@
     "autoload-dev": {
         "psr-4": {
             "Hwkdo\\IntranetAppBueExports\\Tests\\": "tests/",
-            "Workbench\\App\\": "workbench/app/"
+            "Workbench\\App\\": "workbench/app/",
+            "Workbench\\Database\\Factories\\": "workbench/database/factories/"
         }
     },
     "scripts": {

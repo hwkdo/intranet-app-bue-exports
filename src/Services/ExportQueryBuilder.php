@@ -34,13 +34,7 @@ class ExportQueryBuilder
             $query->whereIn($type->gewerke_field, $filters->gewerke);
         }
 
-        if (filled($type->orte_field) && $filters->orte !== []) {
-            $query->whereIn($type->orte_field, $filters->orte);
-        }
-
-        if (filled($type->landkreise_field) && $filters->landkreise !== []) {
-            $query->whereIn($type->landkreise_field, $filters->landkreise);
-        }
+        $this->applyLocationFilters($query, $type, $filters);
 
         foreach ($type->customFilterDefinitions() as $definition) {
             $this->applyCustomFilter($query, $definition, $filters->custom[$definition->key] ?? null);
@@ -53,6 +47,30 @@ class ExportQueryBuilder
         }
 
         return $query;
+    }
+
+    private function applyLocationFilters(Builder $query, ExportType $type, ExportFilterInput $filters): void
+    {
+        $hasOrte = filled($type->orte_field) && $filters->orte !== [];
+        $hasLandkreise = filled($type->landkreise_field) && $filters->landkreise !== [];
+
+        if ($hasOrte && $hasLandkreise) {
+            $query->where(function (Builder $locationQuery) use ($type, $filters): void {
+                $locationQuery
+                    ->whereIn($type->orte_field, $filters->orte)
+                    ->orWhereIn($type->landkreise_field, $filters->landkreise);
+            });
+
+            return;
+        }
+
+        if ($hasOrte) {
+            $query->whereIn($type->orte_field, $filters->orte);
+        }
+
+        if ($hasLandkreise) {
+            $query->whereIn($type->landkreise_field, $filters->landkreise);
+        }
     }
 
     private function applyCustomFilter(Builder $query, CustomFilterDefinition $definition, mixed $value): void

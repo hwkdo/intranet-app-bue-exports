@@ -58,19 +58,19 @@ return new class extends Migration
                 [
                     'key' => 'min_betrag',
                     'label' => 'Mindest-Beitrag Jährlich',
-                    'field' => 'BETRAG',
+                    'field' => 'BEITRAG',
                     'operator' => '>',
                     'type' => 'number',
                 ],
                 [
                     'key' => 'max_betrag',
                     'label' => 'Maximal-Beitrag Jährlich',
-                    'field' => 'BETRAG',
+                    'field' => 'BEITRAG',
                     'operator' => '<',
                     'type' => 'number',
                 ],
             ],
-            'excluded_columns' => ['BETRAG'],
+            'excluded_columns' => ['BEITRAG'],
             'column_labels' => [
                 'email' => 'E-Mail',
                 'gewerbe' => 'Gewerk',

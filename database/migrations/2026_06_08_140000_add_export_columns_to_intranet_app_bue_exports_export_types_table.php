@@ -25,7 +25,7 @@ return new class extends Migration
         ExportType::query()
             ->where('slug', 'beitragsstaerke')
             ->update([
-                'excluded_columns' => ['BETRAG'],
+                'excluded_columns' => ['BEITRAG'],
                 'column_labels' => [
                     'email' => 'E-Mail',
                     'gewerbe' => 'Gewerk',

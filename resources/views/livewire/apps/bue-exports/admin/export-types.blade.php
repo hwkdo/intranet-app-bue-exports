@@ -248,8 +248,8 @@ $memberCount = function (?string $roleName): int {
                     <flux:input
                         wire:model="excludedColumnsInput"
                         label="Ausgeschlossene Spalten"
-                        description="Kommagetrennte Oracle-Spaltennamen, die nicht im Excel-Export erscheinen (z. B. BETRAG, INTERN_ID)."
-                        placeholder="BETRAG"
+                        description="Kommagetrennte Oracle-Spaltennamen, die nicht im Excel-Export erscheinen (z. B. BEITRAG, INTERN_ID)."
+                        placeholder="BEITRAG"
                         class="md:col-span-2"
                     />
                 </div>
