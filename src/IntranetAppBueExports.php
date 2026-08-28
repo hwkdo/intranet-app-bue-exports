@@ -4,7 +4,6 @@ namespace Hwkdo\IntranetAppBueExports;
 
 use Hwkdo\IntranetAppBase\Interfaces\IntranetAppInterface;
 use Hwkdo\IntranetAppBueExports\Data\AppSettings;
-use Hwkdo\IntranetAppBueExports\Data\UserSettings;
 use Illuminate\Support\Collection;
 
 class IntranetAppBueExports implements IntranetAppInterface
@@ -36,7 +35,7 @@ class IntranetAppBueExports implements IntranetAppInterface
 
     public static function userSettingsClass(): ?string
     {
-        return UserSettings::class;
+        return null;
     }
 
     public static function appSettingsClass(): ?string

@@ -7,9 +7,7 @@
 @php
     $defaultNavItems = [
         ['label' => 'Übersicht', 'href' => route('apps.bue-exports.index'), 'icon' => 'home', 'description' => 'Zurück zur Übersicht', 'buttonText' => 'Übersicht anzeigen'],
-        ['label' => 'Exporte', 'href' => route('apps.bue-exports.export'), 'icon' => 'arrow-down-tray', 'description' => 'BUE-Daten exportieren', 'buttonText' => 'Exporte öffnen'],
-        ['label' => 'Meine Einstellungen', 'href' => route('apps.bue-exports.settings.user'), 'icon' => 'cog-6-tooth', 'description' => 'Persönliche Einstellungen anpassen', 'buttonText' => 'Einstellungen öffnen'],
-        ['label' => 'App-Info', 'href' => route('apps.bue-exports.info'), 'icon' => 'information-circle', 'description' => 'Installierte Version und Release-Historie', 'buttonText' => 'App-Info anzeigen'],
+        ['label' => 'Exporte', 'href' => route('apps.bue-exports.export'), 'icon' => 'arrow-down-tray', 'description' => 'BUE-Daten exportieren', 'buttonText' => 'Exporte öffnen'],        ['label' => 'App-Info', 'href' => route('apps.bue-exports.info'), 'icon' => 'information-circle', 'description' => 'Installierte Version und Release-Historie', 'buttonText' => 'App-Info anzeigen'],
         ['label' => 'Admin', 'href' => route('apps.bue-exports.admin.index'), 'icon' => 'shield-check', 'description' => 'Administrationsbereich verwalten', 'buttonText' => 'Admin öffnen', 'permission' => 'manage-app-bue-exports']
     ];
     
