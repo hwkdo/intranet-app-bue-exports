@@ -39,4 +39,16 @@ class ExportTypeFactory extends Factory
             'role_name' => null,
         ];
     }
+
+    public function withoutFilters(): static
+    {
+        return $this->state(fn (): array => [
+            'email_field' => null,
+            'gewerke_field' => null,
+            'orte_field' => null,
+            'landkreise_field' => null,
+            'anlage_field' => null,
+            'custom_filters' => [],
+        ]);
+    }
 }

@@ -8,7 +8,7 @@ use Hwkdo\IntranetAppBueExports\Services\ExportQueryBuilder;
 use Hwkdo\IntranetAppBueExports\Services\StammdatenOptionsService;
 use Maatwebsite\Excel\Facades\Excel;
 
-use function Livewire\Volt\{computed, state, title, updated};
+use function Livewire\Volt\{computed, mount, state, title, updated};
 
 title('Bue Exports - Exporte');
 
@@ -48,15 +48,36 @@ $landkreiseOptions = computed(fn () => app(StammdatenOptionsService::class)->val
 
 $anlagenOptions = computed(fn () => app(StammdatenOptionsService::class)->anlagen());
 
+$applyExportTypeSelection = function (?ExportType $type): void {
+    $this->nurMitEmail = false;
+    $this->gewerke = [];
+    $this->orte = [];
+    $this->landkreise = [];
+    $this->anlage = null;
+    $this->custom = [];
+    $this->maxRecords = $type?->max_records;
+};
+
+mount(function (): void {
+    $slug = request()->query('type');
+
+    if (! is_string($slug) || $slug === '') {
+        return;
+    }
+
+    $type = $this->exportTypes->firstWhere('slug', $slug);
+
+    if ($type === null) {
+        return;
+    }
+
+    $this->exportTypeId = $type->id;
+    $this->applyExportTypeSelection($type);
+});
+
 updated([
     'exportTypeId' => function (): void {
-        $this->nurMitEmail = false;
-        $this->gewerke = [];
-        $this->orte = [];
-        $this->landkreise = [];
-        $this->anlage = null;
-        $this->custom = [];
-        $this->maxRecords = $this->selectedType?->max_records;
+        $this->applyExportTypeSelection($this->selectedType);
     },
 ]);
 

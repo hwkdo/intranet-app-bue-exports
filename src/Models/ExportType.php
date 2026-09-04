@@ -67,6 +67,24 @@ class ExportType extends Model
         return Str::slug($name, '_');
     }
 
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
+    /**
+     * True when the export UI needs filter input before running.
+     * Optional "nur mit E-Mail" alone does not require the form.
+     */
+    public function requiresExportForm(): bool
+    {
+        return filled($this->gewerke_field)
+            || filled($this->orte_field)
+            || filled($this->landkreise_field)
+            || filled($this->anlage_field)
+            || ($this->custom_filters ?? []) !== [];
+    }
+
     public function userCanAccess(?Authenticatable $user = null): bool
     {
         $user ??= auth()->user();
