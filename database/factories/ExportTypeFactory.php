@@ -18,7 +18,7 @@ class ExportTypeFactory extends Factory
 
     public function definition(): array
     {
-        $slug = fake()->unique()->slug('_');
+        $slug = str_replace('-', '_', fake()->unique()->slug(2));
         $accessService = app(ExportTypeAccessService::class);
 
         return [

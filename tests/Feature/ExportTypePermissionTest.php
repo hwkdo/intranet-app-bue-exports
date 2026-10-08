@@ -5,7 +5,7 @@ declare(strict_types=1);
 use App\Models\User;
 use Hwkdo\IntranetAppBueExports\Enums\AccessModeEnum;
 use Hwkdo\IntranetAppBueExports\Models\ExportType;
-use Livewire\Volt\Volt;
+use Livewire\Livewire;
 use Spatie\Permission\Models\Permission;
 
 use function Pest\Laravel\actingAs;
@@ -59,8 +59,8 @@ test('admin can create export type via livewire', function () {
     $admin = User::factory()->create();
     $admin->givePermissionTo(['see-app-bue-exports', 'manage-app-bue-exports']);
 
-    Volt::test('apps.bue-exports.admin.export-types')
-        ->actingAs($admin)
+    Livewire::actingAs($admin)
+        ->test('apps.bue-exports.admin.export-types')
         ->call('create')
         ->set('name', 'Test Export')
         ->set('slug', 'test_export')
@@ -79,8 +79,8 @@ test('admin can save excluded columns via livewire', function () {
     $admin = User::factory()->create();
     $admin->givePermissionTo(['see-app-bue-exports', 'manage-app-bue-exports']);
 
-    Volt::test('apps.bue-exports.admin.export-types')
-        ->actingAs($admin)
+    Livewire::actingAs($admin)
+        ->test('apps.bue-exports.admin.export-types')
         ->call('create')
         ->set('name', 'Spalten Export')
         ->set('slug', 'spalten_export')
@@ -99,8 +99,8 @@ test('new group mode creates role with selected users', function () {
     $member = User::factory()->create();
     $admin->givePermissionTo(['see-app-bue-exports', 'manage-app-bue-exports']);
 
-    Volt::test('apps.bue-exports.admin.export-types')
-        ->actingAs($admin)
+    Livewire::actingAs($admin)
+        ->test('apps.bue-exports.admin.export-types')
         ->call('create')
         ->set('name', 'Gruppen Export')
         ->set('slug', 'gruppen_export')

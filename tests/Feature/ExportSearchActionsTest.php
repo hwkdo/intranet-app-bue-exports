@@ -9,7 +9,7 @@ use Hwkdo\IntranetAppBueExports\Models\ExportType;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Livewire\Volt\Volt;
+use Livewire\Livewire;
 use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Permission\Models\Permission;
 
@@ -50,12 +50,8 @@ test('search actions are generated for active export types', function (): void {
         'permission_name' => 'intranet-app-bue-exports-konjunkturumfrage',
         'sort_order' => 1,
     ]);
-    $form = ExportType::factory()->create([
-        'name' => 'Beitragsstärke',
-        'slug' => 'beitragsstaerke',
-        'permission_name' => 'intranet-app-bue-exports-beitragsstaerke',
-        'sort_order' => 2,
-    ]);
+    $form = ExportType::query()->where('slug', 'beitragsstaerke')->firstOrFail();
+    $form->update(['sort_order' => 2]);
     ExportType::factory()->withoutFilters()->create([
         'name' => 'Inaktiv',
         'slug' => 'inaktiv',
@@ -102,18 +98,14 @@ test('actions search source finds direct export when permitted', function (): vo
 test('export page preselects type from query string', function (): void {
     Permission::findOrCreate('intranet-app-bue-exports-beitragsstaerke', 'web');
 
-    $type = ExportType::factory()->create([
-        'name' => 'Beitragsstärke',
-        'slug' => 'beitragsstaerke',
-        'permission_name' => 'intranet-app-bue-exports-beitragsstaerke',
-    ]);
+    $type = ExportType::query()->where('slug', 'beitragsstaerke')->firstOrFail();
 
     $user = User::factory()->create();
     $user->givePermissionTo(['see-app-bue-exports', 'intranet-app-bue-exports-beitragsstaerke']);
 
-    Volt::withQueryParams(['type' => 'beitragsstaerke'])
+    Livewire::actingAs($user)
+        ->withQueryParams(['type' => 'beitragsstaerke'])
         ->test('apps.bue-exports.export.index')
-        ->actingAs($user)
         ->assertSet('exportTypeId', $type->id)
         ->assertSet('maxRecords', $type->max_records);
 });
@@ -121,10 +113,7 @@ test('export page preselects type from query string', function (): void {
 test('download route redirects form exports to the filter page', function (): void {
     Permission::findOrCreate('intranet-app-bue-exports-beitragsstaerke', 'web');
 
-    $type = ExportType::factory()->create([
-        'slug' => 'beitragsstaerke',
-        'permission_name' => 'intranet-app-bue-exports-beitragsstaerke',
-    ]);
+    $type = ExportType::query()->where('slug', 'beitragsstaerke')->firstOrFail();
 
     $user = User::factory()->create();
     $user->givePermissionTo(['see-app-bue-exports', 'intranet-app-bue-exports-beitragsstaerke']);
